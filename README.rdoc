@@ -1,0 +1,15 @@
+== MyDay
+
+Simple little "todo" app. Provides good coding practice in examples.
+
+To get it running locally:
+
+* clone the repo
+
+* rake db:create db:migrate db:seed
+
+* rails s
+
+* Browse to 127.0.0.1:3000
+
+This is the 8th reboot of my little starter app.
