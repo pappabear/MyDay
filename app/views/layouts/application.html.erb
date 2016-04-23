@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= full_title(yield(:title)) %></title>
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/PaperKitPro/assets/img/logo/logo-114x114.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/PaperKitPro/assets/img/logo/logo-72x72.png"/>
+    <link rel="apple-touch-icon-precomposed" href="/PaperKitPro/assets/img/logo/logo-57x57.png"/>
+    <link rel="apple-touch-icon" href="/PaperKitPro/assets/img/logo/logo-114x114.png"/>
+    <link rel="icon" href="/PaperKitPro/assets/img/logo/favicon.ico" type="image/x-icon"/>
+
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
+    <meta name="viewport" content="width=device-width"/>
+
+    <link href="/PaperKitPro/bootstrap3/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/PaperKitPro/assets/css/ct-paper.css" rel="stylesheet"/>
+    <link href="/PaperKitPro/assets/css/demo.css" rel="stylesheet"/>
+    <link href="/PaperKitPro/assets/css/examples.css" rel="stylesheet"/>
+    <link href="/PaperKitPro/assets/css/custom.css" rel="stylesheet"/>
+
+    <!--     Fonts and icons     -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href='//fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'/>
+    <link href="/PaperKitPro/assets/css/themify-icons.css" rel="stylesheet"/>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+    <%= render 'layouts/shim' %>
+  </head>
+  <body>
+    <%= render 'layouts/header' %>
+    <div class="wrapper" style="padding-top: 6em;">
+      <div class="section section-nude">
+        <div class="container">
+          <% flash.each do |message_type, message| %>
+              <div class="alert alert-<%= message_type %>"><%= message.html_safe %></div>
+          <% end %>
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+    <%= render 'layouts/footer' %>
+    </div>
+  </body>
+</html>
