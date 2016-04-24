@@ -1,106 +1,97 @@
-  <div class="wrapper" >
-    <div class="main">
-      <div class="section section-nude">
-        <div class="container">
-          <h3 class="title-uppercase">Today</h3>
+<div class="wrapper">
+  <div class="main">
+    <div class="section section-nude">
+      <div class="container">
+        <h3 class="title-uppercase">Today</h3>
 
         <div class='settings'>
-          <label>4 of 11 left to do - keep it up!</label>
-          <ul class="notifications">
-            <li class="notification-item">
-              <label class="checkbox" for="checkbox1">
-                <input type="checkbox" value="" id="checkbox1" data-toggle="checkbox">
-                Lawyers - Annie and Adrian to provide logging and narrative <span class="label label-danger">Late</span>
-                <div class="dropup pull-right">
-                  <button id="dLabel" type="button" class="btn btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Actions
-                  </button>
-                  <ul class="dropdown-menu dropdown-actions dropdown-menu-right dropdown-medium" aria-labelledby="dLabel">
-                    <li>
-                      <a href="#" class="action-line">
-                        <div class="row">
-                          <div class="col-xs-2">
-                            <span class="icon-simple"><i class="ti-files"></i></span>
-                          </div>
-                          <div class="col-xs-9">Duplicate</div>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                      <a href="#" class="action-line">
-                        <div class="row">
-                          <div class="col-xs-2">
-                            <span class="icon-simple"><i class="ti-move"></i></span>
-                          </div>
-                          <div class="col-xs-9">Move to another place</div>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                      <a href="#" class="action-line link-danger">
-                        <div class="row">
-                          <div class="col-xs-2">
-                            <span class="icon-simple"><i class="ti-archive"></i></span>
-                          </div>
-                          <div class="col-xs-9">Archive</div>
-                        </div>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
+          <label><%= @todos.where('is_complete is null or is_complete = ?', false).count %> of
+                 <%= @todos.count %> left to do
+          </label>
 
-              </label>
 
-            </li>
-            <li class="notification-item">
-              <label class="checkbox" for="checkbox2">
-                <input type="checkbox" value="" id="checkbox2" data-toggle="checkbox" checked>
-                Lawyers - Annie and Adrian to provide logging and narrative
-                <div class="dropup pull-right">
-                  <button id="dLabel" type="button" class="btn btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Actions
-                  </button>
-                  <ul class="dropdown-menu dropdown-actions dropdown-menu-right dropdown-medium" aria-labelledby="dLabel">
-                    <li>
-                      <a href="#" class="action-line">
-                        <div class="row">
-                          <div class="col-xs-2">
-                            <span class="icon-simple"><i class="ti-files"></i></span>
-                          </div>
-                          <div class="col-xs-9">Duplicate</div>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                      <a href="#" class="action-line">
-                        <div class="row">
-                          <div class="col-xs-2">
-                            <span class="icon-simple"><i class="ti-move"></i></span>
-                          </div>
-                          <div class="col-xs-9">Move to another place</div>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                      <a href="#" class="action-line link-danger">
-                        <div class="row">
-                          <div class="col-xs-2">
-                            <span class="icon-simple"><i class="ti-archive"></i></span>
-                          </div>
-                          <div class="col-xs-9">Archive</div>
-                        </div>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
+            <ul class="notifications">
 
-              </label>
-            </li>
+            <% @todos.where('is_complete is null or is_complete = ?', false).each do |todo| %>
+                <li class="notification-item">
+                  <label class="checkbox" for="checkbox1">
+                    <input type="checkbox" value="" id="checkbox1" data-toggle="checkbox">
+                    <%= todo.subject %>
+                    <% if todo.is_late? %>
+                        <span class="label label-danger">Late</span>
+                    <% end %>
+                    <div class="dropup pull-right">
+                      <button id="dLabel" type="button" class="btn btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        ...
+                      </button>
+                      <ul class="dropdown-menu dropdown-actions dropdown-menu-right dropdown-medium" aria-labelledby="dLabel">
+                        <li>
+                          <a href="#" class="action-line">
+                            <div class="row">
+                              <div class="col-xs-9">
+                                <button href="#" class="btn btn-simple">Skip</button>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#" class="action-line link-danger">
+                            <div class="row">
+                              <div class="col-xs-9">
+                                <button href="#" class="btn btn-simple btn-danger">Delete</button>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </label>
+                </li>
+            <% end %>
+
           </ul>
+
+          <ul class="notifications">
+
+            <% @todos.where('is_complete = ?', true).each do |todo| %>
+                <li class="notification-item">
+                  <label class="checkbox" for="checkbox1">
+                    <input type="checkbox" value="" id="checkbox1" data-toggle="checkbox" checked>
+                    <%= todo.subject %>
+                    <% if todo.is_late? %>
+                        <span class="label label-danger">Late</span>
+                    <% end %>
+                    <div class="dropup pull-right">
+                      <button id="dLabel" type="button" class="btn btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        ...
+                      </button>
+                      <ul class="dropdown-menu dropdown-actions dropdown-menu-right dropdown-medium" aria-labelledby="dLabel">
+                        <li>
+                          <a href="#" class="action-line">
+                            <div class="row">
+                              <div class="col-xs-9">
+                                <button href="#" class="btn btn-simple">Skip</button>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#" class="action-line link-danger">
+                            <div class="row">
+                              <div class="col-xs-9">
+                                <button href="#" class="btn btn-simple btn-danger">Delete</button>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </label>
+                </li>
+            <% end %>
+
+          </ul>
+
         </div>
 
       </div>

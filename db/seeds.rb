@@ -1,3 +1,4 @@
+Todo.destroy_all
 User.destroy_all
 
 User.create(name: "Michael Hartl", email: "mhartl@example.com", password: "foobar", password_confirmation: "foobar",
@@ -16,14 +17,9 @@ User.create!(name:  "Example User",
              activated: true,
              activated_at: Time.zone.now)
 
-99.times do |n|
-  name  = Faker::Name.name
-  email = "example-#{n+1}@railstutorial.org"
-  password = "password"
-  User.create!(name:  name,
-               email: email,
-               password:              password,
-               password_confirmation: password,
-               activated: true,
-               activated_at: Time.zone.now)
-end
+Todo.create(:subject=>'1 due today',:due_date=>Time.now.to_date,:recurrence=>0)
+Todo.create(:subject=>'2 completed today',:due_date=>Time.now.to_date,:recurrence=>0, :is_complete=>true)
+Todo.create(:subject=>'9 due yesterday',:due_date=>Time.now.to_date.advance(:days=>-1).advance(:hours=>-5),:recurrence=>0)
+Todo.create(:subject=>'due tomorrow',:due_date=>Time.now.to_date.advance(:days=>1).advance(:hours=>-5),:recurrence=>0)
+Todo.create(:subject=>'item with NO due date',:due_date=>nil,:recurrence=>0)
+Todo.create(:subject=>'daily recurrence',:due_date=>Time.now.to_date,:recurrence=>1)
