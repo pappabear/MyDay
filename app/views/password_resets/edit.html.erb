@@ -1,20 +1,39 @@
 <% provide(:title, 'Reset password') %>
-<h1>Reset password</h1>
 
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <%= form_for(@user, url: password_reset_path(params[:id])) do |f| %>
-      <%= render 'shared/error_messages' %>
+<%= render partial: "shared/error_messages", locals: {object: @user} %>
 
-      <%= hidden_field_tag :email, @user.email %>
+<div class="background">
+  <div class="filter-black"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1 ">
+        <div>
+          <h3 class="title">Reset password</h3>
 
-      <%= f.label :password %>
-      <%= f.password_field :password, class: 'form-control' %>
-      
-      <%= f.label :password_confirmation, "Confirmation" %>
-      <%= f.password_field :password_confirmation, class: 'form-control' %>
-      
-      <%= f.submit "Update password", class: "btn btn-primary" %>
-    <% end %>
+          <%= form_for(@user, url: password_reset_path(params[:id])) do |f| %>
+
+              <%= hidden_field_tag :email, @user.email %>
+
+              <div class="form-group <%= "has-error".html_safe unless @user.errors[:password].blank? %>">
+                <%= f.label :password %>
+                <%= f.password_field :password, class: 'form-control border-input' %>
+              </div>
+
+              <div class="form-group <%= "has-error".html_safe unless @user.errors[:password_confirmation].blank? %>">
+                <%= f.label :password_confirmation, "Confirmation" %>
+                <%= f.password_field :password_confirmation, class: 'form-control border-input' %>
+              </div>
+
+              <%= f.submit "Update password", class: "btn btn-primary" %>
+              <p>&nbsp;</p>
+              <p>&nbsp;</p>
+              <p>&nbsp;</p>
+
+          <% end %>
+
+        </div>
+      </div>
+    </div>
   </div>
+
 </div>
