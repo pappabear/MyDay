@@ -4,6 +4,11 @@ class TodosController < ApplicationController
   before_action :set_todo, only: [:show, :edit, :update, :destroy]
 
 
+  def new
+    @todo = Todo.new
+  end
+
+
   def today
     @todo = Todo.new
 
@@ -15,22 +20,20 @@ class TodosController < ApplicationController
   def create
     @todo = Todo.new(todo_params)
 
-    # correct inbound date format, since jQuery is sending this as mm/dd/yyyy
-    begin
-      if params[:todo][:due_date].length > 0  # != ''
-        @todo.due_date = Date.strptime(params[:todo][:due_date], '%m/%d/%Y')
+    respond_to do |format|
+      if @todo.save
+        format.html {
+          flash[:success] = "Todo was successfully created."
+          @todos = determine_todos_as_determined_by_working_date
+          redirect_to today_path
+        }
+        format.json { render :show, status: :created, location: @todo }
       else
-        @todo.due_date = nil
+        format.html { render :new }
+        format.json { render json: @todo.errors, status: :unprocessable_entity }
       end
-    rescue Exception=>e
-      Rails.logger.error(e.to_s)
-      @todo.errors.add e.to_s
     end
 
-    @todo.save!
-
-    @todos = determine_todos_as_determined_by_working_date
-    @percent_complete = calculate_percent_complete(@todos)
   end
 
 

@@ -27,9 +27,10 @@
   </head>
   <body>
     <%= render 'layouts/header' %>
-    <div class="wrapper" style="padding-top: 3em;">
+    <div class="wrapper" style="padding-top: 0em;">
       <div class="section section-nude">
         <div class="container">
+          <p>&nbsp;</p>
           <% flash.each do |message_type, message| %>
               <div class="alert alert-<%= message_type %>"><%= message.html_safe %></div>
           <% end %>

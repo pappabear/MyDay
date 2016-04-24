@@ -1,5 +1,11 @@
 class Todo < ActiveRecord::Base
 
+
+  validates_presence_of :subject
+
+  before_validation :convert_due_date, :on => [:create, :update]
+
+
   def is_late?
     o = false
 
@@ -17,6 +23,9 @@ class Todo < ActiveRecord::Base
   end
 
 
+  private
+
+
   def description
     s = ""
     s += "Late. " if self.is_late?
@@ -26,6 +35,31 @@ class Todo < ActiveRecord::Base
     s += "Recurs weekly." if self.recurrence==2
     s += "Recurs every 2 weeks." if self.recurrence==3
     return s
+  end
+
+
+  def convert_due_date
+
+    #puts 'self.due_date_before_type_cast=>' + self.due_date_before_type_cast + '<'
+
+    if self.due_date_before_type_cast == ""
+      puts 'returning 1'
+      return
+    end
+
+    if self.due_date_before_type_cast.nil?
+      puts 'returning 2'
+      return
+    end
+
+    if self.due_date_before_type_cast.split('-').size == 3
+      puts 'returning 3'
+      # date is already in yyyy-mm-dd format
+      return
+    end
+
+    parts = self.due_date_before_type_cast.split('/')
+    self.due_date = parts[2] + '-' + parts[0] + '-' + parts[1]
   end
 
 

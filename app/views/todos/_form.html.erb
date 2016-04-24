@@ -1,0 +1,29 @@
+<%= form_for @todo do |f| %>
+
+    <div class="form-group <%= "has-error".html_safe unless @todo.errors[:subject].blank? %>">
+      <%= f.label 'Subject' %>
+      <%= f.text_field :subject, class: 'form-control border-input input-lg' %>
+    </div>
+
+    <div class="form-group <%= "has-error".html_safe unless @todo.errors[:due_date].blank? %>">
+      <%= f.label 'Due' %>
+      <%= f.text_field :due_date, class: 'datepicker form-control border-input', placeholder: 'for example, ' + Date.today.strftime("%m/%d/%Y") %>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label">Recurrence</label>
+        <select name="todo[recurrence]" id="todo_recurrence"class="form-control border-input" >
+          <option value="0" <%= "selected".html_safe if @todo.recurrence == 0 %>>None</option>
+          <option value="1" <%= "selected".html_safe if @todo.recurrence == 1 %>>Daily</option>
+          <option value="2" <%= "selected".html_safe if @todo.recurrence == 2 %>>Weekly</option>
+          <option value="3" <%= "selected".html_safe if @todo.recurrence == 3 %>>Every 2 weeks</option>
+        </select>
+    </div>
+
+    <%= f.submit "Save", class: "btn btn-success btn-fill btn-block" %>
+
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+
+<% end %>
+

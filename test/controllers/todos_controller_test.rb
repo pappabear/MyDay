@@ -10,7 +10,7 @@ class TodosControllerTest < ActionController::TestCase
 
 
   test "should redirect index when not logged in" do
-    get :index, d: '5/30/2015'
+    get :index, d: '2015-05-30'
     assert_redirected_to login_path
   end
 
@@ -46,7 +46,7 @@ class TodosControllerTest < ActionController::TestCase
 
   test "should get index" do
     log_in_as(@user)
-    get :index, d: '5/30/2015'
+    get :index, d: '2015-05-30'
     assert_response :success
     assert_not_nil assigns(:todos)
   end
@@ -63,7 +63,7 @@ class TodosControllerTest < ActionController::TestCase
     log_in_as(@user)
     b = Date.today.strftime('%m/%d/%Y')
     assert_difference('Todo.count') do
-      post :create, format: :js, todo: {subject: 'test', due_date: b, recurrence: 1, is_complete: false, position: 2, completed_at: b }
+      post :create, todo: {subject: 'test', due_date: b, recurrence: 1, is_complete: false }
     end
   end
 

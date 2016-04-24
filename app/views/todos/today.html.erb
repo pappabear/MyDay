@@ -4,6 +4,8 @@
       <div class="container">
         <h3 class="title-uppercase">Today</h3>
 
+        <%= link_to "Add a todo", new_todo_path, class: "btn btn-info pull-right" %>
+
         <div class='settings'>
           <label><%= @todos.where('is_complete is null or is_complete = ?', false).count %> of
                  <%= @todos.count %> left to do
