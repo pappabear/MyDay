@@ -2,12 +2,12 @@
 
     <div class="form-group <%= "has-error".html_safe unless @todo.errors[:subject].blank? %>">
       <%= f.label 'Subject' %>
-      <%= f.text_field :subject, class: 'form-control border-input input-lg' %>
+      <%= f.text_field :subject, class: 'form-control border-input' %>
     </div>
 
     <div class="form-group <%= "has-error".html_safe unless @todo.errors[:due_date].blank? %>">
       <%= f.label 'Due' %>
-      <%= f.text_field :due_date, class: 'datepicker form-control border-input', placeholder: 'for example, ' + Date.today.strftime("%m/%d/%Y") %>
+      <%= f.text_field :due_date, class: 'datepicker form-control border-input' %>
     </div>
 
     <div class="form-group">

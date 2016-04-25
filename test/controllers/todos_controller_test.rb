@@ -78,7 +78,7 @@ class TodosControllerTest < ActionController::TestCase
 
   test "should update an item" do
     log_in_as(@user)
-    patch :update, format: :js, id: @todo, todo: { subject: @todo.subject + ' e', due_date: Date.today.strftime('%m/%d/%Y') }
+    patch :update, id: @todo, todo: { subject: @todo.subject + ' e', due_date: Date.today.strftime('%m/%d/%Y') }
   end
 
 

@@ -22,32 +22,42 @@
                     <% if todo.is_late? %>
                         <span class="label label-danger">Late</span>
                     <% end %>
-                    <div class="dropup pull-right">
+                  </label>
+                    <div class="dropup pull-right" style="margin-top: -45px;">
                       <button id="dLabel" type="button" class="btn btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         ...
                       </button>
                       <ul class="dropdown-menu dropdown-actions dropdown-menu-right dropdown-medium" aria-labelledby="dLabel">
                         <li>
-                          <a href="#" class="action-line">
+                          <a href="/todos/<%= todo.id %>/edit" class="action-line">
                             <div class="row">
                               <div class="col-xs-9">
-                                <button href="#" class="btn btn-simple">Skip</button>
+                                <button href="/todos/<%= todo.id %>/edit" class="btn btn-simple btn-info">Edit</button>
                               </div>
                             </div>
                           </a>
                         </li>
                         <li>
-                          <a href="#" class="action-line link-danger">
+                          <a href="/todos/<%= todo.id %>/skip" class="action-line">
                             <div class="row">
                               <div class="col-xs-9">
-                                <button href="#" class="btn btn-simple btn-danger">Delete</button>
+                                <button href="/todos/<%= todo.id %>/edit" class="btn btn-simple">Skip</button>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="/todos/<%= todo.id %>" class="action-line">
+                            <div class="row">
+                              <div class="col-xs-9">
+                                <button href="/todos/<%= todo.id %>" class="btn btn-simple btn-danger">Delete</button>
                               </div>
                             </div>
                           </a>
                         </li>
                       </ul>
                     </div>
-                  </label>
+
                 </li>
             <% end %>
 
@@ -68,6 +78,15 @@
                         ...
                       </button>
                       <ul class="dropdown-menu dropdown-actions dropdown-menu-right dropdown-medium" aria-labelledby="dLabel">
+                        <li>
+                          <a href="#" class="action-line">
+                            <div class="row">
+                              <div class="col-xs-9">
+                                <button href="/todos/<%= todo.id %>/edit" class="btn btn-simple btn-info">Edit</button>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
                         <li>
                           <a href="#" class="action-line">
                             <div class="row">

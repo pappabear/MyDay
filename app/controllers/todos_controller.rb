@@ -4,16 +4,15 @@ class TodosController < ApplicationController
   before_action :set_todo, only: [:show, :edit, :update, :destroy]
 
 
-  def new
+  def today
     @todo = Todo.new
+    @todos =  Todo.where('(is_complete is null and due_date<?) or (due_date=?)', Date.today, Date.today)
   end
 
 
-  def today
+  def new
     @todo = Todo.new
-
-    @todos =  Todo.where('(is_complete is null and due_date<?) or (due_date=?)', Date.today, Date.today)
-    @percent_complete = calculate_percent_complete(@todos)
+    @todo.due_date = Date.today.strftime("%m/%d/%Y")
   end
 
 
@@ -37,6 +36,11 @@ class TodosController < ApplicationController
   end
 
 
+  def edit
+    @todo.due_date = @todo.due_date.strftime("%m/%d/%Y")
+  end
+
+
   def update
     @todo = Todo.find(params[:id])
     @todo.update_attributes(todo_params)
@@ -46,22 +50,20 @@ class TodosController < ApplicationController
       @todo.is_complete = true
     end
 
-    # correct inbound date format, since jQuery is sending this as mm/dd/yyyy
-    begin
-      if params[:todo][:due_date].length > 0  # != ''
-        @todo.due_date = Date.strptime(params[:todo][:due_date], '%m/%d/%Y')
+    respond_to do |format|
+      if @todo.save
+        format.html {
+          flash[:success] = "Todo was successfully updated."
+          @todos = determine_todos_as_determined_by_working_date
+          redirect_to today_path
+        }
+        format.json { render :show, status: :created, location: @todo }
       else
-        @todo.due_date = nil
+        format.html { render :new }
+        format.json { render json: @todo.errors, status: :unprocessable_entity }
       end
-    rescue Exception=>e
-      Rails.logger.error(e.to_s)
-      @todo.errors.add e.to_s
     end
 
-    @todo.save!
-
-    @todos = determine_todos_as_determined_by_working_date
-    @percent_complete = calculate_percent_complete(@todos)
   end
 
 
@@ -89,7 +91,6 @@ class TodosController < ApplicationController
     @item.save!
     #render :nothing => true
     @todos = determine_todos_as_determined_by_working_date
-    @percent_complete = calculate_percent_complete(@todos)
   end
 
 
@@ -99,7 +100,6 @@ class TodosController < ApplicationController
     @item.save!
     #render :nothing => true
     @todos = determine_todos_as_determined_by_working_date
-    @percent_complete = calculate_percent_complete(@todos)
   end
 
 
@@ -120,7 +120,6 @@ class TodosController < ApplicationController
     @todo.save!
 
     @todos = determine_todos_as_determined_by_working_date
-    @percent_complete = calculate_percent_complete(@todos)
   end
 
 
@@ -129,7 +128,6 @@ class TodosController < ApplicationController
     @todo.destroy
 
     @todos = determine_todos_as_determined_by_working_date
-    @percent_complete = calculate_percent_complete(@todos)
   end
 
 
@@ -151,14 +149,12 @@ class TodosController < ApplicationController
   def tomorrow
     @todo = Todo.new
     @todos = Todo.where('due_date=?', Date.today+1)
-    @percent_complete = calculate_percent_complete(@todos)
   end
 
 
   def someday
     @todo = Todo.new
     @todos = Todo.where('due_date IS NULL')
-    @percent_complete = calculate_percent_complete(@todos)
   end
 
 
@@ -170,7 +166,6 @@ class TodosController < ApplicationController
 
     @todo = Todo.new
     @todos = Todo.where('due_date=?', params['d'])
-    @percent_complete = calculate_percent_complete(@todos)
   end
 
 
@@ -201,38 +196,38 @@ class TodosController < ApplicationController
   end
 
 
-  def calculate_percent_complete(todos)
-
-    n = todos.count
-    done = 0.0
-    undone = 0.0
-    p = 0.0
-
-    if n == 0
-      return 0
-    end
-
-    todos.each do |t|
-      if t.is_complete?
-        done += 1.0
-      else
-        undone += 1.0
-      end
-    end
-
-    if done == n
-      return 100
-    end
-
-    if undone == 0
-      return 0
-    end
-
-    p = (((done/n).to_f)*100).to_i
-    # puts 'p=' + p.to_s
-    return p
-
-  end
+  # def calculate_percent_complete(todos)
+  #
+  #   n = todos.count
+  #   done = 0.0
+  #   undone = 0.0
+  #   p = 0.0
+  #
+  #   if n == 0
+  #     return 0
+  #   end
+  #
+  #   todos.each do |t|
+  #     if t.is_complete?
+  #       done += 1.0
+  #     else
+  #       undone += 1.0
+  #     end
+  #   end
+  #
+  #   if done == n
+  #     return 100
+  #   end
+  #
+  #   if undone == 0
+  #     return 0
+  #   end
+  #
+  #   p = (((done/n).to_f)*100).to_i
+  #   # puts 'p=' + p.to_s
+  #   return p
+  #
+  # end
 
 
   def fix_date_format(raw_date_string)
