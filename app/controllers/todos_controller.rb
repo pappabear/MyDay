@@ -104,7 +104,6 @@ class TodosController < ApplicationController
 
 
   def skip
-    puts 'Entering SKIP'
     @todo = Todo.find(params[:id])
 
     if @todo.recurrence <= 1
