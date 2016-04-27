@@ -28,7 +28,8 @@ Rails.application.routes.draw do
   put '/todos/mark_complete/:id' => 'todos#mark_complete'
   put '/todos/mark_incomplete/:id' => 'todos#mark_incomplete'
   put '/todos/move_to_tomorrow/:id' => 'todos#move_to_tomorrow'
-  put '/todos/skip/:id' => 'todos#skip'
+  #put '/todos/skip/:id' => 'todos#skip'
+  put '/todos/skip/:id', to: 'todos#skip', as: 'todo_skip'
   post '/todos/set_due_date/:id' => 'todos#set_due_date'
   post '/todos/sort' => 'todos#sort'
 

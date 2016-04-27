@@ -40,19 +40,16 @@ class Todo < ActiveRecord::Base
 
   def convert_due_date
 
-    #puts 'self.due_date_before_type_cast=>' + self.due_date_before_type_cast + '<'
-
     if self.due_date_before_type_cast == ""
-      puts 'returning 1'
       return
     end
 
     if self.due_date_before_type_cast.nil?
-      puts 'returning 2'
       return
     end
 
-    if self.due_date_before_type_cast.split('-').size == 3
+    #if self.due_date_before_type_cast.split('-').size == 3
+    if self.due_date.to_s.split('-').size == 3
       puts 'returning 3'
       # date is already in yyyy-mm-dd format
       return

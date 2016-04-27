@@ -17,7 +17,7 @@
               <li class="dropdown-header">Actions</li>
               <li><%= link_to "Edit", edit_todo_path(todo), class: 'btn btn-simple' %></li>
               <li class="divider"></li>
-              <li><a href="#">Skip</a></li>
+              <li><%= link_to "Skip", todo_skip_path(todo), method: :put, class: 'btn btn-simple btn-info' %></li>
               <li class="divider"></li>
               <li><%= link_to "Delete", todo, method: :delete, class: 'btn btn-simple btn-danger' %></li>
             </ul>

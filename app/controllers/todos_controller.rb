@@ -104,6 +104,7 @@ class TodosController < ApplicationController
 
 
   def skip
+    puts 'Entering SKIP'
     @todo = Todo.find(params[:id])
 
     if @todo.recurrence <= 1
@@ -117,9 +118,10 @@ class TodosController < ApplicationController
     end
 
     @todo.update_attribute('due_date', newDate)
-    @todo.save!
+    @todo.save
 
     @todos = determine_todos_as_determined_by_working_date
+    redirect_to today_path
   end
 
 

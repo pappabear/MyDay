@@ -2,12 +2,12 @@
 
 one:
   subject: MyString
-  due_date: 2016-04-24
+  due_date: <%= Date.today %>
   recurrence: 1
   is_complete: false
 
 two:
   subject: MyString
-  due_date: 2016-04-24
+  due_date: <%= Date.today %>
   recurrence: 1
   is_complete: false

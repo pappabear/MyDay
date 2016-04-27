@@ -107,7 +107,7 @@ class TodosControllerTest < ActionController::TestCase
 
   test "should skip this item" do
     log_in_as(@user)
-    put :skip, format: :js, id: @todo
+    put :skip, id: @todo
     test = Todo.find(@todo.id)
     assert_equal Date.tomorrow, test.due_date
   end
