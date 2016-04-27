@@ -50,7 +50,7 @@
                           <a href="/todos/<%= todo.id %>" class="action-line">
                             <div class="row">
                               <div class="col-xs-9">
-                                <button href="/todos/<%= todo.id %>" class="btn btn-simple btn-danger">Delete</button>
+                                <%= link_to "Delete", todo, method: :delete, class: 'btn btn-simple btn-danger' %>
                               </div>
                             </div>
                           </a>

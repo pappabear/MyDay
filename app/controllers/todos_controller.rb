@@ -126,8 +126,8 @@ class TodosController < ApplicationController
   def destroy
     @todo = Todo.find(params[:id])
     @todo.destroy
-
     @todos = determine_todos_as_determined_by_working_date
+    redirect_to today_path
   end
 
 
