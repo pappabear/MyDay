@@ -1,0 +1,30 @@
+<ul class="notifications">
+
+  <% todos.each do |todo| %>
+      <li class="notification-item">
+        <label class="checkbox" for="checkbox1">
+          <input type="checkbox" value="" id="checkbox1" data-toggle="checkbox" <%= "checked".html_safe if todo.is_complete? %>>
+          <%= link_to todo.subject, edit_todo_path(todo), style: "color:#66615b" %>
+          <% if todo.is_late? %>
+              <span class="label label-danger">Late</span>
+          <% end %>
+        </label>
+
+        <ul class="nav navbar-nav pull-right collapse navbar-collapse">
+          <li class="dropdown" style="margin-top: -45px;">
+            <button href="#" class="dropdown-toggle btn" data-toggle="dropdown">...</button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li class="dropdown-header">Actions</li>
+              <li><%= link_to "Edit", edit_todo_path(todo), class: 'btn btn-simple' %></li>
+              <li class="divider"></li>
+              <li><a href="#">Skip</a></li>
+              <li class="divider"></li>
+              <li><%= link_to "Delete", todo, method: :delete, class: 'btn btn-simple btn-danger' %></li>
+            </ul>
+          </li>
+        </ul>
+
+      </li>
+  <% end %>
+
+</ul>
