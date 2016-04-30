@@ -1,30 +1,101 @@
-<ul class="notifications">
+<div class='settings' id="checkList">
+  <label><%= todos.where('is_complete is null or is_complete = ?', false).count %> of
+    <%= todos.count %> left to do
+  </label>
 
-  <% todos.each do |todo| %>
-      <li class="notification-item">
-        <label class="checkbox" for="checkbox1">
-          <input type="checkbox" value="" id="checkbox1" data-toggle="checkbox" <%= "checked".html_safe if todo.is_complete? %>>
-          <%= link_to todo.subject, edit_todo_path(todo), style: "color:#66615b" %>
-          <% if todo.is_late? %>
-              <span class="label label-danger">Late</span>
-          <% end %>
-        </label>
 
-        <ul class="nav navbar-nav pull-right collapse navbar-collapse">
-          <li class="dropdown" style="margin-top: -45px;">
-            <button href="#" class="dropdown-toggle btn" data-toggle="dropdown">...</button>
-            <ul class="dropdown-menu dropdown-menu-right">
-              <li class="dropdown-header">Actions</li>
-              <li><%= link_to "Edit", edit_todo_path(todo), class: 'btn btn-simple' %></li>
-              <li class="divider"></li>
-              <li><%= link_to "Skip", todo_skip_path(todo), method: :put, class: 'btn btn-simple btn-info' %></li>
-              <li class="divider"></li>
-              <li><%= link_to "Delete", todo, method: :delete, class: 'btn btn-simple btn-danger' %></li>
-            </ul>
-          </li>
-        </ul>
+  <ul class="notifications">
 
-      </li>
-  <% end %>
+    <% todos.each do |todo| %>
+        <li class="notification-item">
+          <label class="checkbox" for="checkbox1">
+            <input type="checkbox" value="<%= todo.id %>" id="<%= todo.id %>" name="<%= todo.id %>" data-toggle="checkbox" <%= "checked".html_safe if todo.is_complete? %>>
+            <%= link_to todo.subject, edit_todo_path(todo), style: "color:#66615b" %>
+            <% if todo.is_late? %>
+                <span class="label label-danger">Late</span>
+            <% end %>
+          </label>
 
-</ul>
+          <ul class="nav navbar-nav pull-right collapse navbar-collapse">
+            <li class="dropdown" style="margin-top: -45px;">
+              <button href="#" class="dropdown-toggle btn" data-toggle="dropdown">...</button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li class="dropdown-header">Actions</li>
+                <li><%= link_to "Edit", edit_todo_path(todo), class: 'btn btn-simple' %></li>
+                <li class="divider"></li>
+                <li><%= link_to "Skip", todo_skip_path(todo), method: :put, class: 'btn btn-simple btn-info' %></li>
+                <li class="divider"></li>
+                <li><%= link_to "Delete", todo, method: :delete, class: 'btn btn-simple btn-danger' %></li>
+              </ul>
+            </li>
+          </ul>
+
+        </li>
+    <% end %>
+
+  </ul>
+
+</div>
+
+<script type="text/javascript">
+
+    function markAsComplete(pk) {
+        if (pk == null) {
+            console.log("Ignoring this checkbox click.");
+            return;
+        }
+
+        console.log("Executing markAsComplete()...");
+        $.ajax({
+            url: '/todos/mark_complete/' + pk + '.js',
+            type: 'PUT',
+            success: function (data) {
+                console.log('Item ' + pk + ' successfully marked complete in database.');
+            }
+        });
+    }
+
+
+    function markAsIncomplete(pk) {
+        if (pk == null) {
+            console.log("Ignoring this checkbox click.");
+            return;
+        }
+
+        console.log("Executing markAsIncomplete()...");
+        $.ajax({
+            url: '/todos/mark_incomplete/' + pk + '.js',
+            type: 'PUT',
+            success: function (data) {
+                console.log('Item ' + pk + ' successfully marked not complete in database.');
+            }
+        });
+    }
+
+    function setupPage() {
+
+        $('[data-toggle="checkbox"]').each(function () {
+            var $checkbox = $(this);
+            $checkbox.checkbox();
+        });
+
+        // wire up the checkbox listener(s)
+        $(':checkbox').change(function () {
+            var pk = $(this).val();
+            var checked = $(this).prop('checked');
+            console.log("Changed: " + pk + " to " + checked);
+
+            if (checked)
+                markAsComplete(pk);
+            else
+                markAsIncomplete(pk);
+        });
+
+    }
+
+    $(document).ready(function () {
+        console.log('Console is ON inside _checklist.html.erb');
+        setupPage();
+    });
+
+</script>

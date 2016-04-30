@@ -6,7 +6,7 @@ class TodosController < ApplicationController
 
   def today
     @todo = Todo.new
-    @todos =  Todo.where('(is_complete is null and due_date<?) or (due_date=?)', Date.today, Date.today)
+    @todos = Todo.where('(is_complete is null and due_date<?) or (due_date=?)', Date.today, Date.today)
   end
 
 
@@ -89,7 +89,6 @@ class TodosController < ApplicationController
 
     @item.update_attribute('is_complete', true)
     @item.save!
-    #render :nothing => true
     @todos = determine_todos_as_determined_by_working_date
   end
 
@@ -98,7 +97,6 @@ class TodosController < ApplicationController
     @item = Todo.find(params[:id])
     @item.update_attribute('is_complete', nil)
     @item.save!
-    #render :nothing => true
     @todos = determine_todos_as_determined_by_working_date
   end
 
@@ -186,7 +184,13 @@ class TodosController < ApplicationController
 
 
   def determine_todos_as_determined_by_working_date
-    todos = []
+    #puts '>>>>> session[:working_date]=' + session[:working_date]
+    b = session[:working_date].split('/')
+    s = b[2] + '-' + b[0] + '-' + b[1]
+    #puts '>>>>> s=' + s
+    d = s.to_date
+    #puts ' Converted date then is ' + d.to_s
+    todos = Todo.where('due_date=?', d)
     #--- determine which day's todos to return
     if session[:working_date] == Date.today.strftime("%m/%d/%Y")
       todos =  Todo.where('(is_complete is null and due_date<?) or (due_date=?)', Date.today, Date.today)

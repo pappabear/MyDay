@@ -1,0 +1,9 @@
+console.log('Entering mark_incomplete.js...');
+
+// update the partial with the new item hash
+$("#checkList").html("<%= escape_javascript(render partial: "checklist", locals: {todos: @todos.order('is_complete DESC')}) %>");
+setupPage();
+
+
+
+

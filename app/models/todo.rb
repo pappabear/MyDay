@@ -50,7 +50,6 @@ class Todo < ActiveRecord::Base
 
     #if self.due_date_before_type_cast.split('-').size == 3
     if self.due_date.to_s.split('-').size == 3
-      puts 'returning 3'
       # date is already in yyyy-mm-dd format
       return
     end
