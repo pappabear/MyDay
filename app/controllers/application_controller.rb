@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
 
   def make_sure_there_is_a_working_date
     session[:working_date] = Date.today.strftime("%m/%d/%Y") if session[:working_date].nil?
+    session[:path] = 'Today' if session[:path].nil?
   end
 
 

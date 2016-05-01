@@ -37,8 +37,17 @@
         <% else %>
             <li><button class="btn btn-success" data-toggle="modal" data-target="#loginModal">Sign In</button></li>
         <% end %>
-
       </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <button href="#" class="dropdown-toggle btn btn-success btn-fill" data-toggle="dropdown"><%= session[:path] %> <b class="caret"></b></button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <%= date_select_items.html_safe %>
+          </ul>
+        </li>
+      </ul>
+
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-->
 </nav>

@@ -5,14 +5,16 @@ class TodosController < ApplicationController
 
 
   def today
+    session[:working_date] = Date.today.strftime("%m/%d/%Y")
     @todo = Todo.new
     @todos = Todo.where('(is_complete is null and due_date<?) or (due_date=?)', Date.today, Date.today)
+    session[:path] = 'Today'
   end
 
 
   def new
     @todo = Todo.new
-    @todo.due_date = Date.today.strftime("%m/%d/%Y")
+    @todo.due_date = session[:working_date] #Date.today.strftime("%m/%d/%Y")
   end
 
 
@@ -37,7 +39,7 @@ class TodosController < ApplicationController
 
 
   def edit
-    @todo.due_date = @todo.due_date.strftime("%m/%d/%Y")
+    @todo.due_date = @todo.due_date.strftime("%m/%d/%Y") unless @todo.due_date.nil?
   end
 
 
@@ -146,14 +148,17 @@ class TodosController < ApplicationController
 
 
   def tomorrow
+    session[:working_date] = Date.tomorrow.strftime("%m/%d/%Y")
     @todo = Todo.new
-    @todos = Todo.where('due_date=?', Date.today+1)
+    @todos = Todo.where('due_date=?', Date.tomorrow)
+    session[:path] = 'Tomorrow'
   end
 
 
   def someday
     @todo = Todo.new
     @todos = Todo.where('due_date IS NULL')
+    session[:path] = 'Someday'
   end
 
 
