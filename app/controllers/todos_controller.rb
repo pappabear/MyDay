@@ -163,15 +163,17 @@ class TodosController < ApplicationController
 
 
   def index
-
-    if params['d'].nil? || params['d'] == ''
+    if params['d'].nil?
+      flash[:danger] = 'You cannot view all todos. You must specify a date.'
       redirect_to today_path
+      return
     end
 
+    session[:working_date] = params['d'].to_date.strftime("%m/%d/%Y")
     @todo = Todo.new
     @todos = Todo.where('due_date=?', params['d'])
+    session[:path] = session[:working_date]
   end
-
 
 
   def todo_params
