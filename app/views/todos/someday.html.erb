@@ -1,2 +1,16 @@
-<h1>Todos#someday</h1>
-<p>Find me in app/views/todos/someday.html.erb</p>
+<% provide(:title, 'Someday') %>
+
+<div class="wrapper">
+  <div class="main">
+    <div class="section section-nude">
+      <div class="container">
+        <h3 class="title-uppercase">Someday</h3>
+
+        <%= link_to "Add a todo", new_todo_path, class: "btn btn-info pull-right" %>
+
+        <%= render partial: "checklist", locals: {todos: @todos.order('is_complete DESC')} %>
+
+      </div>
+    </div>
+  </div>
+</div>
