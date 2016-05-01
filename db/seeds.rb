@@ -17,14 +17,15 @@ User.create(name: "Chip Irek", email: "chip.irek@gmail.com", password: "lollip0p
 #             activated: true,
 #             activated_at: Time.zone.now)
 
-# Todo.create(:subject=>'1 due today',:due_date=>Date.today,:recurrence=>0)
-# Todo.create(:subject=>'2 completed today',:due_date=>Date.today,:recurrence=>0, :is_complete=>true)
-# Todo.create(:subject=>'9 due yesterday',:due_date=>Time.now.to_date.advance(:days=>-1).advance(:hours=>-5).strftime("%m/%d/%Y"),:recurrence=>0)
-# Todo.create(:subject=>'due tomorrow',:due_date=>Date.tomorrow,:recurrence=>0)
-# Todo.create(:subject=>'item with NO due date',:due_date=>nil,:recurrence=>0)
-# Todo.create(:subject=>'daily recurrence',:due_date=>Date.today,:recurrence=>1)
+Todo.create(:subject=>'1 due today',:due_date=>Date.today,:recurrence=>0)
+Todo.create(:subject=>'2 completed today',:due_date=>Date.today,:recurrence=>0, :is_complete=>true)
+Todo.create(:subject=>'9 due yesterday',:due_date=>Time.now.to_date.advance(:days=>-1).advance(:hours=>-5).strftime("%m/%d/%Y"),:recurrence=>0)
+Todo.create(:subject=>'due tomorrow',:due_date=>Date.tomorrow,:recurrence=>0)
+Todo.create(:subject=>'item with NO due date',:due_date=>nil,:recurrence=>0)
+Todo.create(:subject=>'daily recurrence',:due_date=>Date.today,:recurrence=>1)
 
 
+=begin
 Todo.create(:subject=>'10am Martin',                                    :due_date=>'2016-05-01',:recurrence=>0, :is_complete=>true)
 Todo.create(:subject=>'7am muck and clean barn',                        :due_date=>'2016-05-01',:recurrence=>2, :is_complete=>true)
 Todo.create(:subject=>'finish UAT heroku deploy',                       :due_date=>'2016-05-01',:recurrence=>0)
@@ -110,5 +111,6 @@ Todo.create(:subject=>'1030am sprint demo', :due_date=>'2016-05-12',:recurrence=
 Todo.create(:subject=>'2pm Ben 1-on-1', :due_date=>'2016-05-12',:recurrence=>3)
 
 Todo.create(:subject=>'xena nails + molly nails + brush molly', :due_date=>'2016-05-14',:recurrence=>3)
+=end
 
 
