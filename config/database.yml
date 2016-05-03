@@ -1,13 +1,13 @@
 development:
   host: localhost
   adapter: postgresql
-  database: myday
+  database: MyDay
   username: <%= ENV['POSTGRES_USERNAME'] %>
   password: <%= ENV['POSTGRES_PASSWORD'] %>
 
 test:
   host: localhost
   adapter: postgresql
-  database: myday_TEST
+  database: MyDay_TEST
   username: <%= ENV['POSTGRES_USERNAME'] %>
   password: <%= ENV['POSTGRES_PASSWORD'] %>

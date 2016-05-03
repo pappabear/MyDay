@@ -40,7 +40,7 @@ class Todo < ActiveRecord::Base
 
   def convert_due_date
 
-    if self.due_date_before_type_cast == ""
+    if self.due_date_before_type_cast.to_s == ""
       return
     end
 
@@ -48,14 +48,14 @@ class Todo < ActiveRecord::Base
       return
     end
 
-    #if self.due_date_before_type_cast.split('-').size == 3
-    if self.due_date.to_s.split('-').size == 3
+    if self.due_date_before_type_cast.to_s.split('-').count == 3
       # date is already in yyyy-mm-dd format
       return
     end
 
     parts = self.due_date_before_type_cast.split('/')
     self.due_date = parts[2] + '-' + parts[0] + '-' + parts[1]
+
   end
 
 
