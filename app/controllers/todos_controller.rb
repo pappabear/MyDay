@@ -7,7 +7,7 @@ class TodosController < ApplicationController
   def today
     session[:working_date] = Date.today.strftime("%m/%d/%Y")
     @todo = Todo.new
-    @todos = Todo.where('(is_complete is null and due_date<?) or (due_date=?)', Date.today, Date.today)
+    @todos = Todo.where('user_id=?', current_user.id).where('(is_complete is null and due_date<?) or (due_date=?)', Date.today, Date.today)
     session[:path] = 'Today'
   end
 
@@ -20,6 +20,7 @@ class TodosController < ApplicationController
 
   def create
     @todo = Todo.new(todo_params)
+    @todo.user_id=current_user.id
 
     respond_to do |format|
       if @todo.save
@@ -51,6 +52,7 @@ class TodosController < ApplicationController
     else
       @todo.is_complete = true
     end
+    @todo.user_id=current_user.id
 
     respond_to do |format|
       if @todo.save
@@ -150,14 +152,14 @@ class TodosController < ApplicationController
   def tomorrow
     session[:working_date] = Date.tomorrow.strftime("%m/%d/%Y")
     @todo = Todo.new
-    @todos = Todo.where('due_date=?', Date.tomorrow)
+    @todos = Todo.where('user_id=?', current_user.id).where('due_date=?', Date.tomorrow)
     session[:path] = 'Tomorrow'
   end
 
 
   def someday
     @todo = Todo.new
-    @todos = Todo.where('due_date IS NULL')
+    @todos = Todo.where('user_id=?', current_user.id).where('due_date IS NULL')
     session[:path] = 'Someday'
   end
 
@@ -171,13 +173,13 @@ class TodosController < ApplicationController
 
     session[:working_date] = params['d'].to_date.strftime("%m/%d/%Y")
     @todo = Todo.new
-    @todos = Todo.where('due_date=?', params['d'])
+    @todos = Todo.where('user_id=?', current_user.id).where('due_date=?', params['d'])
     session[:path] = session[:working_date]
   end
 
 
   def todo_params
-    params.require(:todo).permit(:subject, :due_date, :is_complete, :recurrence, :id)
+    params.require(:todo).permit(:subject, :due_date, :is_complete, :recurrence, :id, :user_id)
   end
 
 
@@ -197,12 +199,12 @@ class TodosController < ApplicationController
     #puts '>>>>> s=' + s
     d = s.to_date
     #puts ' Converted date then is ' + d.to_s
-    todos = Todo.where('due_date=?', d)
+    todos = Todo.where('user_id=?', current_user.id).where('due_date=?', d)
     #--- determine which day's todos to return
     if session[:working_date] == Date.today.strftime("%m/%d/%Y")
-      todos =  Todo.where('(is_complete is null and due_date<?) or (due_date=?)', Date.today, Date.today)
+      todos =  Todo.where('user_id=?', current_user.id).where('(is_complete is null and due_date<?) or (due_date=?)', Date.today, Date.today)
     elsif session[:working_date] = Date.tomorrow.strftime("%m/%d/%Y")
-      todos = Todo.where('due_date=?', Date.today+1)
+      todos = Todo.where('user_id=?', current_user.id).where('due_date=?', Date.today+1)
     end
     return todos
   end

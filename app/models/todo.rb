@@ -5,6 +5,8 @@ class Todo < ActiveRecord::Base
 
   before_validation :convert_due_date, :on => [:create, :update]
 
+  has_one :user
+
 
   def is_late?
     o = false
