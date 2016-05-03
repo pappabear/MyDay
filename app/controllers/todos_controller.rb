@@ -27,7 +27,7 @@ class TodosController < ApplicationController
         format.html {
           flash[:success] = "Todo was successfully created."
           @todos = determine_todos_as_determined_by_working_date
-          redirect_to today_path
+          redirect_to get_path_in_context  #today_path
         }
         format.json { render :show, status: :created, location: @todo }
       else
@@ -59,7 +59,7 @@ class TodosController < ApplicationController
         format.html {
           flash[:success] = "Todo was successfully updated."
           @todos = determine_todos_as_determined_by_working_date
-          redirect_to today_path
+          redirect_to get_path_in_context  #today_path
         }
         format.json { render :show, status: :created, location: @todo }
       else
@@ -122,7 +122,7 @@ class TodosController < ApplicationController
     @todo.save
 
     @todos = determine_todos_as_determined_by_working_date
-    redirect_to today_path
+    redirect_to get_path_in_context  #today_path
   end
 
 
@@ -130,7 +130,7 @@ class TodosController < ApplicationController
     @todo = Todo.find(params[:id])
     @todo.destroy
     @todos = determine_todos_as_determined_by_working_date
-    redirect_to today_path
+    redirect_to get_path_in_context  #today_path
   end
 
 
@@ -167,7 +167,7 @@ class TodosController < ApplicationController
   def index
     if params['d'].nil?
       flash[:danger] = 'You cannot view all todos. You must specify a date.'
-      redirect_to today_path
+      redirect_to get_path_in_context  #today_path
       return
     end
 
@@ -257,6 +257,19 @@ class TodosController < ApplicationController
       flash[:danger] = "You have to be a registered user to do that. It's easy to <a href='/signup' style='color:black;'>join</a>!"
       redirect_to login_url
     end
+  end
+
+
+  def get_path_in_context
+    p = ""
+
+    p = todos_path + "?d=" + fix_date_format(session[:working_date])
+    p = today_path if session[:path] == 'Today'
+    p = tomorrow_path if session[:path] == 'Tomorrow'
+    p = someday_path if session[:path] == 'Someday'
+
+    return p
+
   end
 
 
