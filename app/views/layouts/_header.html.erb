@@ -39,14 +39,16 @@
         <% end %>
       </ul>
 
-      <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
-          <button href="#" class="dropdown-toggle btn btn-success btn-fill" data-toggle="dropdown"><%= session[:path] %> <b class="caret"></b></button>
-          <ul class="dropdown-menu dropdown-menu-right">
-            <%= date_select_items.html_safe %>
+      <% if logged_in? %>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <button href="#" class="dropdown-toggle btn btn-success btn-fill" data-toggle="dropdown"><%= session[:path] %> <b class="caret"></b></button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <%= date_select_items.html_safe %>
+              </ul>
+            </li>
           </ul>
-        </li>
-      </ul>
+      <% end %>
 
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-->

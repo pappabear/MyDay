@@ -1,6 +1,7 @@
 class StaticPagesController < ApplicationController
   
   def home
+    session[:path] = 'Choose...'
   end
 
   def help

@@ -1,6 +1,6 @@
 class TodosController < ApplicationController
 
-  before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy, :index]
+  before_action :logged_in_user  #, only: [:new, :create, :edit, :update, :destroy, :index, :today, :tomorrow]
   before_action :set_todo, only: [:show, :edit, :update, :destroy]
 
 

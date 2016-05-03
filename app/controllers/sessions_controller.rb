@@ -9,6 +9,7 @@ class SessionsController < ApplicationController
       if user.activated?
         log_in user
         params[:session][:remember_me] == '1' ? remember(user) : forget(user)
+        session[:path] = 'Today'
         redirect_back_or today_path #user
       else
         message  = "Account not activated. "
