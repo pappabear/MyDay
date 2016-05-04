@@ -83,12 +83,16 @@ class TodosController < ApplicationController
 
       if @new_item.recurrence == 1
         @new_item.due_date = @item.due_date.advance(:days=>1)
+        @new_item.user_id=current_user.id
       elsif @new_item.recurrence == 2
         @new_item.due_date = @item.due_date.advance(:weeks=>1)
+        @new_item.user_id=current_user.id
       elsif @new_item.recurrence == 3
         @new_item.due_date = @item.due_date.advance(:weeks=>2)
+        @new_item.user_id=current_user.id
       else
         @new_item.due_date = @item.due_date.advance(:months=>1)
+        @new_item.user_id=current_user.id
       end
       @new_item.save!
     end
