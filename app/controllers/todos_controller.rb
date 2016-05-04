@@ -7,7 +7,9 @@ class TodosController < ApplicationController
   def today
     session[:working_date] = Date.today.strftime("%m/%d/%Y")
     @todo = Todo.new
-    @todos = Todo.where('user_id=?', current_user.id).where('(is_complete is null and due_date<?) or (due_date=?)', Date.today, Date.today)
+    @todos = Todo.where('user_id=?', current_user.id)
+                 .where('(is_complete is null and due_date<?) or (due_date=?)', Date.today, Date.today)
+                 .order('position')
     session[:path] = 'Today'
   end
 
@@ -134,32 +136,34 @@ class TodosController < ApplicationController
   end
 
 
-=begin
   def sort
-    # puts 'sort params=' + params['item'].to_s
-    @todos = Todo.where('id in (?)', params['item'])
+    puts 'sort params=' + params['todo'].to_s
+    @todos = Todo.where('id in (?)', params['todo'])
 
     @todos.each do |w|
-      w.position = params['item'].index(w.id.to_s) + 1
+      w.position = params['todo'].index(w.id.to_s) + 1
       w.save!
     end
 
     render :nothing => true
   end
-=end
 
 
   def tomorrow
     session[:working_date] = Date.tomorrow.strftime("%m/%d/%Y")
     @todo = Todo.new
-    @todos = Todo.where('user_id=?', current_user.id).where('due_date=?', Date.tomorrow)
+    @todos = Todo.where('user_id=?', current_user.id)
+                 .where('due_date=?', Date.tomorrow)
+                 .order('position')
     session[:path] = 'Tomorrow'
   end
 
 
   def someday
     @todo = Todo.new
-    @todos = Todo.where('user_id=?', current_user.id).where('due_date IS NULL')
+    @todos = Todo.where('user_id=?', current_user.id)
+                 .where('due_date IS NULL')
+                 .order('position')
     session[:path] = 'Someday'
   end
 
@@ -173,7 +177,9 @@ class TodosController < ApplicationController
 
     session[:working_date] = params['d'].to_date.strftime("%m/%d/%Y")
     @todo = Todo.new
-    @todos = Todo.where('user_id=?', current_user.id).where('due_date=?', params['d'])
+    @todos = Todo.where('user_id=?', current_user.id)
+                 .where('due_date=?', params['d'])
+                 .order('position')
     session[:path] = session[:working_date]
   end
 
@@ -199,49 +205,21 @@ class TodosController < ApplicationController
     #puts '>>>>> s=' + s
     d = s.to_date
     #puts ' Converted date then is ' + d.to_s
-    todos = Todo.where('user_id=?', current_user.id).where('due_date=?', d)
+    todos = Todo.where('user_id=?', current_user.id)
+                .where('due_date=?', d)
+                .order('position')
     #--- determine which day's todos to return
     if session[:working_date] == Date.today.strftime("%m/%d/%Y")
-      todos =  Todo.where('user_id=?', current_user.id).where('(is_complete is null and due_date<?) or (due_date=?)', Date.today, Date.today)
+      todos =  Todo.where('user_id=?', current_user.id)
+                   .where('(is_complete is null and due_date<?) or (due_date=?)', Date.today, Date.today)
+                   .order('position')
     elsif session[:working_date] = Date.tomorrow.strftime("%m/%d/%Y")
-      todos = Todo.where('user_id=?', current_user.id).where('due_date=?', Date.today+1)
+      todos = Todo.where('user_id=?', current_user.id)
+                  .where('due_date=?', Date.today+1)
+                  .order('position')
     end
     return todos
   end
-
-
-  # def calculate_percent_complete(todos)
-  #
-  #   n = todos.count
-  #   done = 0.0
-  #   undone = 0.0
-  #   p = 0.0
-  #
-  #   if n == 0
-  #     return 0
-  #   end
-  #
-  #   todos.each do |t|
-  #     if t.is_complete?
-  #       done += 1.0
-  #     else
-  #       undone += 1.0
-  #     end
-  #   end
-  #
-  #   if done == n
-  #     return 100
-  #   end
-  #
-  #   if undone == 0
-  #     return 0
-  #   end
-  #
-  #   p = (((done/n).to_f)*100).to_i
-  #   # puts 'p=' + p.to_s
-  #   return p
-  #
-  # end
 
 
   def fix_date_format(raw_date_string)

@@ -1,4 +1,4 @@
 <% provide(:title, session[:working_date]) %>
 <h3 class="title-uppercase"><%= DAYS[convert_MMDDYYYY_to_YYYYMMDD(session[:working_date]).wday] + " - " + session[:working_date] %></h3>
 <%= link_to "Add a todo", new_todo_path, class: "btn btn-info pull-right" %>
-<%= render partial: "checklist", locals: {todos: @todos.order('is_complete DESC')} %>
+<%= render partial: "checklist", locals: {todos: @todos} %>

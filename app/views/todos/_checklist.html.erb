@@ -4,10 +4,10 @@
   </label>
 
 
-  <ul class="notifications">
+  <ul class="notifications" id="taskList">
 
     <% todos.each do |todo| %>
-        <li class="notification-item">
+        <li class="notification-item" id="todo_<%= todo.id %>">
           <label class="checkbox" for="checkbox1">
             <input type="checkbox" value="<%= todo.id %>" id="<%= todo.id %>" name="<%= todo.id %>" data-toggle="checkbox" <%= "checked".html_safe if todo.is_complete? %>>
             <%= link_to todo.subject, edit_todo_path(todo), style: "color:#66615b" %>
@@ -37,6 +37,7 @@
 
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 <script type="text/javascript">
 
     function markAsComplete(pk) {
@@ -91,6 +92,24 @@
                 markAsIncomplete(pk);
         });
 
+        // make the new list sortable
+        $("#taskList").sortable({
+            items: 'li',
+            update: function () {
+                console.log("Sending the sorted list via ajax to the server.");
+                console.log('Data=' + $('#taskList').sortable('serialize'));
+                $.ajax({
+                    type: 'post',
+                    data: $('#taskList').sortable('serialize'),
+                    dataType: 'script',
+                    complete: function (request) {
+                        console.log('Sort completed.');
+                    },
+                    url: '/todos/sort'
+                });
+            }
+        });
+        $("#taskList").disableSelection();
     }
 
     $(document).ready(function () {
