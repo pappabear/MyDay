@@ -12,7 +12,7 @@
 //
 //= require jquery
 //= require bootstrap
-//= require turbolinks
+//= require jquery.turbolinks
 //= require_tree .
 //= require_tree ./components
 //= require_self
