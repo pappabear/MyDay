@@ -25,7 +25,10 @@ class TodosController < ApplicationController
     @todo.user_id=current_user.id
 
     respond_to do |format|
-      if @todo.save
+      if @todo.save!
+
+        session[:working_date] = @todo.due_date.strftime("%m/%d/%Y")
+
         format.html {
           flash[:success] = "Todo was successfully created."
           @todos = determine_todos_as_determined_by_working_date
@@ -57,7 +60,10 @@ class TodosController < ApplicationController
     @todo.user_id=current_user.id
 
     respond_to do |format|
-      if @todo.save
+      if @todo.save!
+
+        session[:working_date] = @todo.due_date.strftime("%m/%d/%Y")
+
         format.html {
           flash[:success] = "Todo was successfully updated."
           @todos = determine_todos_as_determined_by_working_date
@@ -217,7 +223,7 @@ class TodosController < ApplicationController
       todos =  Todo.where('user_id=?', current_user.id)
                    .where('(is_complete is null and due_date<?) or (due_date=?)', Date.today, Date.today)
                    .order('position')
-    elsif session[:working_date] = Date.tomorrow.strftime("%m/%d/%Y")
+    elsif session[:working_date] == Date.tomorrow.strftime("%m/%d/%Y")
       todos = Todo.where('user_id=?', current_user.id)
                   .where('due_date=?', Date.today+1)
                   .order('position')
@@ -243,15 +249,19 @@ class TodosController < ApplicationController
 
 
   def get_path_in_context
-    p = ""
-
     p = todos_path + "?d=" + fix_date_format(session[:working_date])
-    p = today_path if session[:path] == 'Today'
-    p = tomorrow_path if session[:path] == 'Tomorrow'
-    p = someday_path if session[:path] == 'Someday'
+
+    if session[:working_date] == Date.today.strftime("%m/%d/%Y")
+      p = today_path
+      session[:path] = 'Today'
+    end
+
+    if session[:working_date] == Date.tomorrow.strftime("%m/%d/%Y")
+      p = tomorrow_path
+      session[:path] = 'Tomorrow'
+    end
 
     return p
-
   end
 
 
