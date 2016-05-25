@@ -83,24 +83,43 @@ class TodosController < ApplicationController
     @item = Todo.find(params[:id])
 
     if @item.recurrence > 0
-      @new_item = Todo.new
-      @new_item.subject = @item.subject
-      @new_item.recurrence = @item.recurrence
+      new_item = Todo.new
+      new_item.subject = @item.subject
+      new_item.recurrence = @item.recurrence
 
-      if @new_item.recurrence == 1
-        @new_item.due_date = @item.due_date.advance(:days=>1)
-        @new_item.user_id=current_user.id
+      if new_item.recurrence == 1
+        # --- find any item with this subject tomorrow, if exists and incomplete then do NOT create again
+        match = Todo.where('subject = ?', @item.subject).where('due_date = ?', @item.due_date.advance(:days=>1)).first
+        if match.nil?
+          new_item.due_date = @item.due_date.advance(:days=>1)
+          new_item.user_id=current_user.id
+          new_item.save!
+        end
       elsif @new_item.recurrence == 2
-        @new_item.due_date = @item.due_date.advance(:weeks=>1)
-        @new_item.user_id=current_user.id
+        # --- find an item with this subject next week, if exists and incomplete then do NOT create again
+        match = Todo.where('subject = ?', @item.subject).where('due_date = ?', @item.due_date.advance(:weeks=>1)).first
+        if match.nil?
+          new_item.due_date = @item.due_date.advance(:weeks=>1)
+          new_item.user_id=current_user.id
+          new_item.save!
+        end
       elsif @new_item.recurrence == 3
-        @new_item.due_date = @item.due_date.advance(:weeks=>2)
-        @new_item.user_id=current_user.id
+        # --- find an item with this subject in 2 weeks, if exists and incomplete then do NOT create again
+        match = Todo.where('subject = ?', @item.subject).where('due_date = ?', @item.due_date.advance(:weeks=>2)).first
+        if match.nil?
+          new_item.due_date = @item.due_date.advance(:weeks=>2)
+          new_item.user_id=current_user.id
+          new_item.save!
+        end
       else
-        @new_item.due_date = @item.due_date.advance(:months=>1)
-        @new_item.user_id=current_user.id
+        # --- find an item with this subject in a month, if exists and incomplete then do NOT create again
+        match = Todo.where('subject = ?', @item.subject).where('due_date = ?', @item.due_date.advance(:months=>1)).first
+        if match.nil?
+          new_item.due_date = @item.due_date.advance(:months=>1)
+          new_item.user_id=current_user.id
+          new_item.save!
+        end
       end
-      @new_item.save!
     end
 
     @item.update_attribute('is_complete', true)
