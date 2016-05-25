@@ -95,7 +95,7 @@ class TodosController < ApplicationController
           new_item.user_id=current_user.id
           new_item.save!
         end
-      elsif @new_item.recurrence == 2
+      elsif new_item.recurrence == 2
         # --- find an item with this subject next week, if exists and incomplete then do NOT create again
         match = Todo.where('subject = ?', @item.subject).where('due_date = ?', @item.due_date.advance(:weeks=>1)).first
         if match.nil?
@@ -103,7 +103,7 @@ class TodosController < ApplicationController
           new_item.user_id=current_user.id
           new_item.save!
         end
-      elsif @new_item.recurrence == 3
+      elsif new_item.recurrence == 3
         # --- find an item with this subject in 2 weeks, if exists and incomplete then do NOT create again
         match = Todo.where('subject = ?', @item.subject).where('due_date = ?', @item.due_date.advance(:weeks=>2)).first
         if match.nil?
