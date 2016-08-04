@@ -89,10 +89,9 @@ class TodosController < ApplicationController
 
       if new_item.recurrence == 1
         # --- find any item with this subject tomorrow, if exists and incomplete then do NOT create again
-        match = Todo.where('subject = ?', @item.subject).where('due_date = ?', @item.due_date.advance(:days=>1)).first
-        if match.nil?
+        if Todo.where('subject = ?', @item.subject).where('due_date = ?', @item.due_date.advance(:days=>1)).count == 0
           new_item.due_date = @item.due_date.advance(:days=>1)
-          new_item.user_id=current_user.id
+          new_item.user_id = current_user.id
           new_item.save!
         end
       elsif new_item.recurrence == 2
