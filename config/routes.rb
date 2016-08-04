@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   get '/today' => 'todos#today'
   get '/tomorrow' => 'todos#tomorrow'
   get '/someday' => 'todos#someday'
-  put '/todos/mark_complete/:id' => 'todos#mark_complete'
+  put '/todos/mark_complete/:id', to: 'todos#mark_complete', as: 'mark_complete'
   put '/todos/mark_incomplete/:id' => 'todos#mark_incomplete'
   put '/todos/move_to_tomorrow/:id' => 'todos#move_to_tomorrow'
   #put '/todos/skip/:id' => 'todos#skip'

@@ -90,7 +90,6 @@ class TodosController < ApplicationController
       if new_item.recurrence == 1
         # --- find any item with this subject tomorrow, if exists and incomplete then do NOT create again
         if Todo.where('subject = ?', @item.subject).where('due_date = ?', @item.due_date.advance(:days=>1)).count == 0
-          new_item.subject += ' a'
           new_item.due_date = @item.due_date.advance(:days=>1)
           new_item.user_id = current_user.id
           new_item.save!
@@ -122,9 +121,24 @@ class TodosController < ApplicationController
       end
     end
 
-    @item.update_attribute('is_complete', true)
-    @item.save!
-    @todos = determine_todos_as_determined_by_working_date
+    respond_to do |format|
+      @item.update_attribute('is_complete', true)
+      if @item.save!
+
+        session[:working_date] = @item.due_date.strftime("%m/%d/%Y")
+
+        format.html {
+          flash[:success] = "Todo was successfully updated."
+          @todos = determine_todos_as_determined_by_working_date
+          redirect_to get_path_in_context  #today_path
+        }
+        format.json { render :show, status: :created, location: @item }
+      else
+        format.html { render :new }
+        format.json { render json: @item.errors, status: :unprocessable_entity }
+      end
+    end
+
   end
 
 

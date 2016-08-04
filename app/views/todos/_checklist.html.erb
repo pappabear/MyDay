@@ -8,19 +8,20 @@
 
     <% todos.each do |todo| %>
         <li class="notification-item" id="todo_<%= todo.id %>">
-          <label class="checkbox" for="checkbox1">
-            <input type="checkbox" value="<%= todo.id %>" id="<%= todo.id %>" name="<%= todo.id %>" data-toggle="checkbox" <%= "checked".html_safe if todo.is_complete? %>>
+          <span <%= "style='text-decoration:line-through;'".html_safe if todo.is_complete? %> <%= "style='font-weight:bold;'".html_safe if !todo.is_complete? %>>
             <%= link_to todo.subject, edit_todo_path(todo), style: "color:#66615b" %>
             <% if todo.is_late? %>
                 <span class="label label-danger">Late</span>
             <% end %>
-          </label>
+          </span>
 
           <ul class="nav navbar-nav pull-right ">
-            <li class="dropdown" style="margin-top: -45px;">
+            <li class="dropdown" style="margin-top: -10px;">
               <button href="#" class="dropdown-toggle btn" data-toggle="dropdown">...</button>
               <ul class="dropdown-menu dropdown-menu-right">
                 <li class="dropdown-header">Actions</li>
+                <li><%= link_to "Mark Complete", mark_complete_path(todo), method: 'PUT', class: 'btn btn-simple btn-success' %></li>
+                <li class="divider"></li>
                 <li><%= link_to "Edit", edit_todo_path(todo), class: 'btn btn-simple' %></li>
                 <li class="divider"></li>
                 <li><%= link_to "Skip", todo_skip_path(todo), method: :put, class: 'btn btn-simple btn-info' %></li>
