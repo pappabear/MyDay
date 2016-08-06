@@ -8,7 +8,7 @@
 
     <% todos.each do |todo| %>
         <li class="notification-item" id="todo_<%= todo.id %>">
-          <span <%= "style='text-decoration:line-through;'".html_safe if todo.is_complete? %> <%= "style='font-weight:bold;'".html_safe if !todo.is_complete? %>>
+          <span <%= "style='text-decoration:line-through; font-style:italic;'".html_safe if todo.is_complete? %> <%= "style='font-weight:bold;'".html_safe if !todo.is_complete? %>>
             <%= link_to todo.subject, edit_todo_path(todo), style: "color:#66615b" %>
             <% if todo.is_late? %>
                 <span class="label label-danger">Late</span>
