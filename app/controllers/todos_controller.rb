@@ -121,23 +121,9 @@ class TodosController < ApplicationController
       end
     end
 
-    respond_to do |format|
-      @item.update_attribute('is_complete', true)
-      if @item.save!
-
-        session[:working_date] = @item.due_date.strftime("%m/%d/%Y")
-
-        format.html {
-          flash[:success] = "Todo was successfully updated."
-          @todos = determine_todos_as_determined_by_working_date
-          redirect_to get_path_in_context  #today_path
-        }
-        format.json { render :show, status: :created, location: @item }
-      else
-        format.html { render :new }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
-      end
-    end
+    @item.update_attribute('is_complete', true)
+    @item.save!
+    @todos = determine_todos_as_determined_by_working_date
 
   end
 

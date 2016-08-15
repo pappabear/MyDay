@@ -1,11 +1,12 @@
 
 print 'Deleting old data...'
 Todo.destroy_all
-User.destroy_all
+# User.destroy_all
 sleep(2)
 print 'done.'
 puts
 
+=begin
 print 'Creating new users...'
 User.create(name: "Chip Irek", email: "chip.irek@gmail.com", password: "lollip0p", password_confirmation: "lollip0p",
             activated: true,
@@ -25,6 +26,7 @@ User.create(name: "Michael Hartl", email: "mhartl@example.com", password: "fooba
 sleep(2)
 print 'done.'
 puts
+=end
 
 print 'Creating new todos...'
 Todo.create(:subject=>'1 due today',:due_date=>Date.today,:recurrence=>0, :user_id=>User.first.id)

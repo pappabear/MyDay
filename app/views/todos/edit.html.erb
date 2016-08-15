@@ -13,6 +13,7 @@
 
           <%= render 'form' %>
 
+          <p><%= link_to "Skip", todo_skip_path(@todo), method: :put, class: 'btn btn-simple btn-info btn-fill btn-block' %></p>
           <p>&nbsp;</p>
           <%= link_to 'Back to list', today_path %>
 
