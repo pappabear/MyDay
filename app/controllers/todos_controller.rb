@@ -9,7 +9,7 @@ class TodosController < ApplicationController
     @todo = Todo.new
     @todos = Todo.where('user_id=?', current_user.id)
                  .where('(is_complete is null and due_date<?) or (due_date=?)', Date.today, Date.today)
-                 .order('position')
+                 .order('is_complete desc').order('position')
     session[:path] = 'Today'
   end
 
@@ -236,16 +236,16 @@ class TodosController < ApplicationController
     #puts ' Converted date then is ' + d.to_s
     todos = Todo.where('user_id=?', current_user.id)
                 .where('due_date=?', d)
-                .order('position')
+                .order('is_complete desc').order('position')
     #--- determine which day's todos to return
     if session[:working_date] == Date.today.strftime("%m/%d/%Y")
       todos =  Todo.where('user_id=?', current_user.id)
                    .where('(is_complete is null and due_date<?) or (due_date=?)', Date.today, Date.today)
-                   .order('position')
+                   .order('is_complete desc').order('position')
     elsif session[:working_date] == Date.tomorrow.strftime("%m/%d/%Y")
       todos = Todo.where('user_id=?', current_user.id)
                   .where('due_date=?', Date.today+1)
-                  .order('position')
+                  .order('is_complete desc').order('position')
     end
     return todos
   end
